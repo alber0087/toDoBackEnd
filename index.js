@@ -2,14 +2,14 @@ require('dotenv').config()
 
 const express = require('express')
 const sequelize = require('./db')
-
-
+const { router } = require('./api/routes')
 
 const app = express()
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate()
+    await sequelize.sync({ alter: true })
   } catch(err) {
     console.error(err)
     throw new Error('Cannot connect to the database')
@@ -18,8 +18,10 @@ const connectDB = async () => {
 
 const start = async () => {
   try {
-    app.get('/', (req, res) => res.send('Welcome to the API!'))
-    await app.listen(process.env.PORT)
+    app
+      .use(express.json())
+      .use('/api', router)
+      .listen(process.env.PORT)
     await connectDB()
     console.info(`Server running on port ${process.env.PORT}`)
   } catch(err) {
@@ -29,6 +31,9 @@ const start = async () => {
 }
 
 start()
+
+
+
 
 
 
