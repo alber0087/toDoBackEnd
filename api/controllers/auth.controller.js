@@ -17,7 +17,16 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await User.findOne({ where: { email: req.body.email } })
-    res.send(user)
+    if (!user) { 
+      return res.status(400).send('User email or password incorrect') 
+    }
+    bcrypt.compare(req.body.password, user.password, (err, result) => {
+      if (err) { 
+        return res.status(400).send('User email or password incorrect') 
+      }
+    })
+    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '7d' })
+    res.status(200).json({ token })
   } catch (err) {
     console.error(err)
     res.status(500).send('Error logging in')
