@@ -9,7 +9,7 @@ const app = express()
 const connectDB = async () => {
   try {
     await sequelize.authenticate()
-    await sequelize.sync({ alter: true })
+    await sequelize.sync()
   } catch(err) {
     console.error(err)
     throw new Error('Cannot connect to the database')
