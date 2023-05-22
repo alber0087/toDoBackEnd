@@ -12,7 +12,7 @@ const checkAuth = (req, res, next) => {
       return res.status(500).send('Invalid token')
     }
 
-    const user = User.findOne({ where: { email: data.email }})
+    const user = await User.findOne({ where: { email: data.email }})
 
     if (!user) {
       return res.status(500).send('Invalid token')

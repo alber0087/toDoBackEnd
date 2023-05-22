@@ -5,15 +5,15 @@ const sequelize = require('./db')
 
 const createRelations = require('./db/relationships')
 
-const { router } = require('./api/routes')
+const router = require('./api/routes')
 
 const app = express()
 
 const connectDB = async () => {
   try {
     await sequelize.authenticate()
-    await sequelize.sync()
     await createRelations()
+    await sequelize.sync()
   } catch(err) {
     console.error(err)
     throw new Error('Cannot connect to the database')
