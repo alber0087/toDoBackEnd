@@ -1,5 +1,7 @@
 require('dotenv').config()
 
+const cors = require('cors')
+
 const express = require('express')
 const sequelize = require('./db')
 
@@ -23,6 +25,7 @@ const connectDB = async () => {
 const start = async () => {
   try {
     app
+      .use(cors())
       .use(express.json())
       .use('/api', router)
       .listen(process.env.PORT)
@@ -34,7 +37,13 @@ const start = async () => {
   }
 }
 
+
+
+
 start()
+
+
+
 
 
 
